@@ -40,10 +40,11 @@
         $scope.change = function() {
             console.log(this.value)
         };
+        
         // leds
         $scope.leds = [2, 3, 4, 5, 6];
 
-        // selected fruits
+        // selected leds
         $scope.selection = [];
 
         // toggle selection for a given led by name
@@ -63,7 +64,7 @@
             mySocket.emit('toggle', {
               newArr: $scope.selection
             });  
-            // console.log($scope.selection);
+            console.log($scope.selection);
         };
     });
     </script>

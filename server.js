@@ -29,6 +29,7 @@ board.on("ready", function() {
 });
 
 //Socket connection handler
+
 io.on('connection', function(socket) {
     console.log(socket.id);
 
@@ -44,17 +45,15 @@ io.on('connection', function(socket) {
     });
 
     socket.on('toggle', function(data) {
+        var leds = data.newArr;
         array.stop().off();
-        newLeds = new five.Leds(data.newArr);
-        newLeds.on();
-        // console.log(data.newArr);
+        array.each(function(led, index) {
+            if (leds.indexOf(led.pin) > -1) {
+                led.on();
+            }
+        });
     });
 
-    // data.newArr.forEach(function(led) {
-    //         if(array.indexOf(led) > -1) {
-    //             array[indexOf(led)].on();
-    //         }
-    //     })
 });
 
 console.log('Waiting for connection');
