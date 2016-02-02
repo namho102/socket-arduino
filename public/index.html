@@ -17,6 +17,7 @@
     <div ng-controller="ArduController">
         <button ng-click="ledsOn()">Turn on all led</button>
         <button ng-click="ledsOff()">Turn off all led</button>
+        <button ng-click="ledsWave()">Led wave</button>
         <label ng-repeat="led in leds">
             <input type="checkbox" name="selectedLeds[]" value="{{led}}" ng-checked="selection.indexOf(led) > -1" ng-click="toggleSelection(led)"> {{led}}
         </label>
@@ -36,6 +37,10 @@
         $scope.ledsOff = function() {
             mySocket.emit('all-off');
             console.log('LED OFF');
+        };
+        $scope.ledsWave = function() {
+            mySocket.emit('wave');
+            console.log('LED WAVE');
         };
 
         // leds
