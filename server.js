@@ -26,6 +26,7 @@ board.on("ready", function() {
     // led = new five.Led(3);
 
     array = new five.Leds([2, 3, 4, 5, 6]);
+
 });
 
 //Socket connection handler
@@ -41,6 +42,42 @@ io.on('connection', function(socket) {
     socket.on('all-off', function(data) {
         array.stop().off();
         console.log('LED OFF RECEIVED');
+
+    });
+
+    socket.on('wave', function(data) {
+
+/*        for (var i = 0; i < 5; i++) {
+
+            (function(index) {
+                setTimeout(function() {
+                    // console.log('turned on', array[i].pin);
+                    array[index].on();
+                    // console.log(i);    
+                    if (i == 5) {
+                        console.log('wtf');
+                        array.stop().off();
+                        i = -1;
+                    }
+
+
+                }, 100 * i);
+            })(i);
+        }*/
+
+        array.stop().off();
+        array.each(function(led, index) {
+            (function(i) {
+                // var led = led;
+                // console.log(led.pin);
+                setTimeout(function() {
+                    console.log('turned on', led.pin);
+                    led.on();
+                }, 300 * i);
+            })(index);
+
+        });
+        console.log('LED WAVE RECEIVED');
 
     });
 
