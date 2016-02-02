@@ -1,41 +1,70 @@
-<!DOCTYPE html>  
-<html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->  
-<head>  
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Led Controller</title>
-</head>  
-<body>  
-  <script src="lib/socket.io-client/socket.io.js"></script>
-  <script src="lib/angularjs/angular.js"></script>  
-  <script src="lib/angular-socket-io/socket.js"></script>
- 
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Led Controller</title>
+</head>
+
+<body>
+    <script src="lib/socket.io-client/socket.io.js"></script>
+    <script src="lib/angularjs/angular.js"></script>
+    <script src="lib/angular-socket-io/socket.js"></script>
     <h1>{{"Led controller"}}</h1>
-  <div ng-controller="ArduController">
-    <button ng-click="ledOn()">On</button>
-    <button ng-click="ledOff()">Off</button>
-  </div>
- 
-<script type="text/javascript">  
+    <div ng-controller="ArduController">
+        <button ng-click="ledsOn()">Turn on all led</button>
+        <button ng-click="ledsOff()">Turn off all led</button>
+        <label ng-repeat="led in leds">
+            <input type="checkbox" name="selectedLeds[]" value="{{led}}" ng-checked="selection.indexOf(led) > -1" ng-click="toggleSelection(led)"> {{led}}
+        </label>
+    </div>
+    </form>
+    </div>
+    <script type="text/javascript">
     var app = angular.module('myApp', ['btford.socket-io']).
-    factory('mySocket', function (socketFactory) {
+    factory('mySocket', function(socketFactory) {
         return socketFactory();
     }).
-    controller('ArduController', function ($scope,mySocket) {
- 
-        $scope.ledOn = function () {
- 
-            mySocket.emit('led:on');
+    controller('ArduController', function($scope, mySocket) {
+        
+        $scope.ledsOn = function() {
+            mySocket.emit('all-on');
             console.log('LED ON');
         };
- 
- 
-        $scope.ledOff = function () {
- 
-            mySocket.emit('led:off');
-            console.log('LED OFF');  
-        };    
-});
- 
-</script>  
+        $scope.ledsOff = function() {
+            mySocket.emit('all-off');
+            console.log('LED OFF');
+        };
+        $scope.change = function() {
+            console.log(this.value)
+        };
+        // leds
+        $scope.leds = [2, 3, 4, 5, 6];
+
+        // selected fruits
+        $scope.selection = [];
+
+        // toggle selection for a given led by name
+        $scope.toggleSelection = function toggleSelection(led) {
+            var idx = $scope.selection.indexOf(led);
+
+            // is currently selected
+            if (idx > -1) {
+                $scope.selection.splice(idx, 1);
+            }
+
+            // is newly selected
+            else {
+                $scope.selection.push(led);
+            }
+
+            mySocket.emit('toggle', {
+              newArr: $scope.selection
+            });  
+            // console.log($scope.selection);
+        };
+    });
+    </script>
 </body>
