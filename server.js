@@ -47,8 +47,7 @@ io.on('connection', function(socket) {
 
     socket.on('wave', function(data) {
 
-/*        for (var i = 0; i < 5; i++) {
-
+    /*  for (var i = 0; i < 5; i++) {
             (function(index) {
                 setTimeout(function() {
                     // console.log('turned on', array[i].pin);
@@ -59,8 +58,6 @@ io.on('connection', function(socket) {
                         array.stop().off();
                         i = -1;
                     }
-
-
                 }, 100 * i);
             })(i);
         }*/
